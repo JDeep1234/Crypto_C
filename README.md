@@ -1,67 +1,77 @@
-# Cryptography Lab Programs in C
+# Cryptography Implementations in C
 
-## Overview
-This repository contains implementations of various cryptographic algorithms and techniques in C programming language.
 
-## Algorithms Implemented
 
-### 1. Traditional Ciphers
-- Caesar Cipher
-- Simple substitution cipher
-- Demonstrates basic encryption and decryption techniques
+### Implemented Cryptographic Techniques
 
-### 2. DES (Data Encryption Standard)
-- Symmetric key block cipher
-- Placeholder implementation showing encryption structure
-- Demonstrates round-based encryption process
+#### 1. Classical Cryptography
+- [Caesar Cipher](caesar_cipher.c): Basic substitution cipher
+- Demonstrates fundamental encryption principles
 
-### 3. AES (Advanced Encryption Standard)
-- Modern symmetric encryption algorithm
-- Placeholder showing encryption stages
-- Supports 128-bit block size
+#### 2. Symmetric Key Cryptography
+- [DES Algorithm](des_algorithm.c): Data Encryption Standard
+- [AES Algorithm](aes_algorithm.c): Advanced Encryption Standard
+- Explores block cipher mechanisms
 
-### 4. RSA Algorithm
-- Asymmetric encryption algorithm
-- Key generation
-- Encryption and decryption of messages
-- Demonstrates modular arithmetic principles
+#### 3. Asymmetric Cryptography
+- [RSA Algorithm](rsa_algorithm.c): Public-key cryptosystem
+- Demonstrates key generation and message encryption/decryption
 
-### 5. Diffie-Hellman Key Exchange
-- Secure key exchange protocol
-- Allows two parties to generate shared secret
-- Demonstrates public key cryptography
+#### 4. Key Exchange Protocols
+- [Diffie-Hellman Key Exchange](diffie_hellman.c): Secure key negotiation
+- [ElGamal Cryptographic System](elgamal_crypto.c): Public-key cryptosystem
 
-### 6. ElGamal Cryptographic System
-- Public-key cryptosystem
-- Encryption and decryption of messages
-- Based on discrete logarithm problem
+#### 5. Security Techniques
+- [Man-in-the-Middle Attack Simulation](mitm_attack.c): Demonstrates communication vulnerabilities
+- [Authentication using Hashing](hashing_auth.c): Secure password storage technique
 
-### 7. Man-in-the-Middle (MITM) Attack Simulation
-- Demonstrates potential vulnerabilities in key exchange
-- Shows how an attacker can intercept and manipulate communication
+### 🛠️ Prerequisites
+- GCC Compiler
+- Standard C Libraries
+- Math Library
 
-### 8. Authentication using Hashing
-- Secure password storage technique
-- Uses one-way hash function
-- Demonstrates basic authentication mechanism
+### 💻 Compilation Instructions
 
-## Compilation
-Compile each program using GCC:
+#### Compile Individual Programs
 ```bash
+# General Compilation Pattern
 gcc -o program_name program_name.c -lm
+
+# Example Compilations
+gcc -o caesar_cipher caesar_cipher.c
+gcc -o rsa_algorithm rsa_algorithm.c -lm
 ```
 
-## Security Notes
-- These are educational implementations
-- Not recommended for production use
-- Use established cryptographic libraries for real-world applications
+#### Compile All Programs
+```bash
+# Using Makefile
+make all
 
-## Dependencies
-- Standard C libraries
-- Math library (-lm)
+# Clean compiled binaries
+make clean
+```
 
-## Contributing
-Contributions, improvements, and bug fixes are welcome!
 
-## License
-MIT License
+
+### 🔍 Cryptographic Concepts Covered
+- Encryption/Decryption
+- Key Generation
+- Hashing
+- Public Key Infrastructure
+- Secure Communication Protocols
+
+### 📦 Project Structure
+```
+cryptography_lab/
+├── caesar_cipher.c
+├── des_algorithm.c
+├── aes_algorithm.c
+├── rsa_algorithm.c
+├── diffie_hellman.c
+├── elgamal_crypto.c
+├── mitm_attack.c
+├── hashing_auth.c
+├── Makefile
+└── README.md
+```
+
