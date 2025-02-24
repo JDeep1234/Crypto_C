@@ -1,4 +1,4 @@
-# Cryptography Implementations in C
+# Cryptography Lab Programs in C
 
 ## Overview
 This repository contains implementations of various cryptographic algorithms and techniques in C programming language.
