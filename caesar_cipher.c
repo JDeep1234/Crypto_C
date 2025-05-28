@@ -1,31 +1,45 @@
 #include <stdio.h>
-#include <string.h>
 #include <ctype.h>
 
-void encrypt(char *text, int shift) {
-    for(int i = 0; text[i] != '\0'; i++) {
-        if(isalpha(text[i])) {
-            char base = isupper(text[i]) ? 'A' : 'a';
-            text[i] = ((text[i] - base + shift) % 26) + base;
+#define MAX_LEN 1000
+
+void encrypt(char *text, int key) {
+    for (int i = 0; text[i] != '\0'; i++) {
+        char ch = text[i];
+        if (isalpha(ch)) {
+            char offset = isupper(ch) ? 'A' : 'a';
+            ch = ((ch - offset + key) % 26) + offset;
         }
+        text[i] = ch;
     }
 }
 
-void decrypt(char *text, int shift) {
-    encrypt(text, 26 - shift);
+void decrypt(char *text, int key) {
+    for (int i = 0; text[i] != '\0'; i++) {
+        char ch = text[i];
+        if (isalpha(ch)) {
+            char offset = isupper(ch) ? 'A' : 'a';
+            ch = ((ch - offset - key + 26) % 26) + offset;
+        }
+        text[i] = ch;
+    }
 }
 
 int main() {
-    char message[] = "HELLO WORLD";
-    int shift = 3;
+    char text[MAX_LEN];
+    int key;
 
-    printf("Original: %s\n", message);
-    
-    encrypt(message, shift);
-    printf("Encrypted: %s\n", message);
-    
-    decrypt(message, shift);
-    printf("Decrypted: %s\n", message);
+    printf("Enter text: ");
+    fgets(text, MAX_LEN, stdin);
+
+    printf("Enter key (shift): ");
+    scanf("%d", &key);
+
+    encrypt(text, key);
+    printf("Encrypted: %s\n", text);
+
+    decrypt(text, key);
+    printf("Decrypted: %s\n", text);
 
     return 0;
 }
