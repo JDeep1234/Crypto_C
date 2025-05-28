@@ -47,6 +47,9 @@ gcc auth_hash.c -o auth_hash -lssl -lcrypto
 #For Hashing Program to Run
 ./auth_hash
 
+#For installing Openssl
+sudo apt-get install libssl-dev
+
 
 ```
 
