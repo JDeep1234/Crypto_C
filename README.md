@@ -1,4 +1,4 @@
-# Cryptography Implementations in C
+# Applied Cryptography Lab Programs
 
 
 
