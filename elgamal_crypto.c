@@ -58,9 +58,9 @@ int main() {
 
     // Step 5: Verification
     if (sharedA == sharedB) {
-        printf("\n✅ Key exchange successful! Shared secret = %lld\n", sharedA);
+        printf("\ Key exchange successful! Shared secret = %lld\n", sharedA);
     } else {
-        printf("\n❌ Key mismatch! Something went wrong.\n");
+        printf("\n Key mismatch! Something went wrong.\n");
     }
 
     return 0;
