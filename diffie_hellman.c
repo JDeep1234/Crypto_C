@@ -1,40 +1,59 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include <math.h>
 
-// Modular Exponentiation
-long long mod_pow(long long base, long long exp, long long mod) {
+// Function to perform modular exponentiation: (base^exp) % mod
+long long power(long long base, long long exp, long long mod) {
     long long result = 1;
-    base %= mod;
+    base = base % mod;
+
     while (exp > 0) {
-        if (exp & 1) result = (result * base) % mod;
+        if (exp % 2 == 1)  // If exp is odd
+            result = (result * base) % mod;
+
+        exp = exp >> 1; // exp = exp / 2
         base = (base * base) % mod;
-        exp >>= 1;
     }
+
     return result;
 }
 
 int main() {
-    // Public parameters
-    int p = 23;  // Prime number
-    int g = 5;   // Primitive root
+    long long p, g, a, b, A, B, sharedKey1, sharedKey2;
 
-    // Alice's private key
-    int a = 6;
-    // Bob's private key
-    int b = 15;
+    // Step 1: Choose a prime number p and primitive root g
+    printf("Enter a prime number (p): ");
+    scanf("%lld", &p);
+    printf("Enter a primitive root modulo p (g): ");
+    scanf("%lld", &g);
 
-    // Public keys
-    long long A = mod_pow(g, a, p);
-    long long B = mod_pow(g, b, p);
+    // Step 2: Private keys (random values)
+    srand(time(NULL));
+    a = rand() % (p - 2) + 1; // 1 <= a < p
+    b = rand() % (p - 2) + 1; // 1 <= b < p
 
-    // Shared secret keys
-    long long alice_secret = mod_pow(B, a, p);
-    long long bob_secret = mod_pow(A, b, p);
+    printf("\nPrivate key of Alice (a): %lld\n", a);
+    printf("Private key of Bob   (b): %lld\n", b);
 
-    printf("Alice's Public Key: %lld\n", A);
-    printf("Bob's Public Key: %lld\n", B);
-    printf("Alice's Shared Secret: %lld\n", alice_secret);
-    printf("Bob's Shared Secret: %lld\n", bob_secret);
+    // Step 3: Public keys
+    A = power(g, a, p);
+    B = power(g, b, p);
+
+    printf("\nPublic key of Alice (A = g^a mod p): %lld\n", A);
+    printf("Public key of Bob   (B = g^b mod p): %lld\n", B);
+
+    // Step 5: Shared secret
+    sharedKey1 = power(B, a, p); // Alice computes
+    sharedKey2 = power(A, b, p); // Bob computes
+
+    printf("\nShared secret computed by Alice: %lld\n", sharedKey1);
+    printf("Shared secret computed by Bob:   %lld\n", sharedKey2);
+
+    if (sharedKey1 == sharedKey2)
+        printf("\n✅ Key exchange successful. Shared secret key established.\n");
+    else
+        printf("\n❌ Key exchange failed.\n");
 
     return 0;
 }
