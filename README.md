@@ -41,6 +41,10 @@ gcc -o program_name program_name.c -lm
 # Example Compilations
 gcc -o caesar_cipher caesar_cipher.c
 gcc -o rsa_algorithm rsa_algorithm.c -lm
+
+#For Hashing
+gcc auth_hash.c -o auth_hash -lssl -lcrypto
+
 ```
 
 #### Compile All Programs
