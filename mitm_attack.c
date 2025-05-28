@@ -1,51 +1,41 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
+#include <time.h>
 
-long long mod_pow(long long base, long long exp, long long mod) {
-    long long result = 1;
+long long mod_exp(long long base, long long exp, long long mod) {
+    long long res = 1;
     base %= mod;
     while (exp > 0) {
-        if (exp & 1) result = (result * base) % mod;
+        if (exp % 2) res = (res * base) % mod;
         base = (base * base) % mod;
-        exp >>= 1;
+        exp /= 2;
     }
-    return result;
+    return res;
 }
 
 int main() {
-    // Public parameters
-    int p = 23;  // Prime number
-    int g = 5;   // Primitive root
+    srand(time(NULL));
 
-    // Alice's private key
-    int a = 6;
-    // Bob's private key
-    int b = 15;
-    // Mallory's (MITM) private key
-    int m = 10;
+    long long p = 23, g = 5;
+    long long a = rand() % 10 + 1; // Alice's private key
+    long long b = rand() % 10 + 1; // Bob's private key
+    long long m1 = rand() % 10 + 1; // Mallory's key for Bob
+    long long m2 = rand() % 10 + 1; // Mallory's key for Alice
 
-    // Public keys
-    long long A = mod_pow(g, a, p);
-    long long B = mod_pow(g, b, p);
+    long long A = mod_exp(g, a, p);
+    long long B = mod_exp(g, b, p);
+    long long K = mod_exp(g, m1, p);
+    long long T = mod_exp(g, m2, p);
 
-    // Mallory intercepts and replaces keys
-    long long M_to_B = mod_pow(g, m, p);
-    long long M_to_A = mod_pow(g, m, p);
+    long long Sa = mod_exp(T, a, p);     // Alice's shared key
+    long long Sb = mod_exp(K, b, p);     // Bob's shared key
+    long long Sm_a = mod_exp(A, m2, p);  // Mallory with Alice
+    long long Sm_b = mod_exp(B, m1, p);  // Mallory with Bob
 
-    // Shared secrets (compromised)
-    long long alice_secret = mod_pow(M_to_B, a, p);
-    long long bob_secret = mod_pow(M_to_A, b, p);
-    long long mallory_secret_A = mod_pow(A, m, p);
-    long long mallory_secret_B = mod_pow(B, m, p);
-
-    printf("MITM Attack Simulation\n");
-    printf("Alice's Public Key: %lld\n", A);
-    printf("Bob's Public Key: %lld\n", B);
-    printf("Mallory's Intercepted Key to Alice: %lld\n", M_to_A);
-    printf("Mallory's Intercepted Key to Bob: %lld\n", M_to_B);
-    printf("Alice's Compromised Secret: %lld\n", alice_secret);
-    printf("Bob's Compromised Secret: %lld\n", bob_secret);
+    printf("Alice's shared key: %lld\n", Sa);
+    printf("Bob's shared key:   %lld\n", Sb);
+    printf("Mallory↔Alice key:  %lld\n", Sm_a);
+    printf("Mallory↔Bob key:    %lld\n", Sm_b);
 
     return 0;
 }
