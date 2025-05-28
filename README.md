@@ -7,6 +7,7 @@
 #### 1. Classical Cryptography
 - [Caesar Cipher](caesar_cipher.c): Basic substitution cipher
 - Demonstrates fundamental encryption principles
+- [Railfence Cipher](railfence.c)
 
 #### 2. Symmetric Key Cryptography
 - [DES Algorithm](des_algorithm.c): Data Encryption Standard
