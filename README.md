@@ -50,6 +50,12 @@ gcc auth_hash.c -o auth_hash -lssl -lcrypto
 #For installing Openssl
 sudo apt-get install libssl-dev
 
+#For AES
+gcc aes_algorithm.c -o aes -lssl -lcrypto
+
+#For DES
+gcc des_algorithm.c -o des -lssl -lcrypto
+
 
 ```
 
