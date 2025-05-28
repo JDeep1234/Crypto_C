@@ -51,9 +51,9 @@ int main() {
     printf("Shared secret computed by Bob:   %lld\n", sharedKey2);
 
     if (sharedKey1 == sharedKey2)
-        printf("\n✅ Key exchange successful. Shared secret key established.\n");
+        printf("\nKey exchange successful. Shared secret key established.\n");
     else
-        printf("\n❌ Key exchange failed.\n");
+        printf("\nKey exchange failed.\n");
 
     return 0;
 }
