@@ -1,60 +1,60 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <openssl/sha.h>
+#include <time.h>
 
-#define HASH_LEN 65
-
-// Hash password using SHA-256
-void hash_pass(const char *pass, char *hash) {
-    unsigned char tmp[SHA256_DIGEST_LENGTH];
-    SHA256((const unsigned char *)pass, strlen(pass), tmp);
-    for (int i = 0; i < SHA256_DIGEST_LENGTH; i++)
-        sprintf(hash + (i * 2), "%02x", tmp[i]);
+// Function to perform modular exponentiation: (base^exp) % mod
+long long mod_exp(long long base, long long exp, long long mod) {
+    long long res = 1;
+    base %= mod;
+    while (exp > 0) {
+        if (exp % 2) res = (res * base) % mod;
+        base = (base * base) % mod;
+        exp /= 2;
+    }
+    return res;
 }
 
 int main() {
-    int choice;
-    printf("1. Register\n2. Login\nChoice: ");
-    scanf("%d", &choice);
+    srand(time(NULL));
 
-    char user[50], pass[50], hash[HASH_LEN];
+    long long p, g;
 
-    if (choice == 1) { // Register
-        printf("Username: "); scanf("%s", user);
-        printf("Password: "); scanf("%s", pass);
-        hash_pass(pass, hash);
+    // Input prime number and base
+    printf("Enter a prime number (p): ");
+    scanf("%lld", &p);
+    printf("Enter a base (g): ");
+    scanf("%lld", &g);
 
-        FILE *f = fopen("users.txt", "a");
-        fprintf(f, "%s %s\n", user, hash);
-        fclose(f);
-        printf("User registered!\n");
+    // Random private keys
+    long long a = rand() % 10 + 1;  // Alice's private key
+    long long b = rand() % 10 + 1;  // Bob's private key
+    long long m1 = rand() % 10 + 1; // Mallory's key for Bob
+    long long m2 = rand() % 10 + 1; // Mallory's key for Alice
 
-    } else if (choice == 2) { // Login
-        char file_user[50], file_hash[HASH_LEN];
-        int found = 0;
+    // Compute public keys
+    long long A = mod_exp(g, a, p); // Alice's public key
+    long long B = mod_exp(g, b, p); // Bob's public key
+    long long K = mod_exp(g, m1, p); // Mallory's public key for Bob
+    long long T = mod_exp(g, m2, p); // Mallory's public key for Alice
 
-        printf("Username: "); scanf("%s", user);
-        printf("Password: "); scanf("%s", pass);
-        hash_pass(pass, hash);
+    // Compute shared secrets
+    long long Sa = mod_exp(T, a, p);     // Alice's shared key
+    long long Sb = mod_exp(K, b, p);     // Bob's shared key
+    long long Sm_a = mod_exp(A, m2, p);  // Mallory's key with Alice
+    long long Sm_b = mod_exp(B, m1, p);  // Mallory's key with Bob
 
-        FILE *f = fopen("users.txt", "r");
-        while (fscanf(f, "%s %s", file_user, file_hash) != EOF) {
-            if (strcmp(user, file_user) == 0) {
-                found = 1;
-                if (strcmp(hash, file_hash) == 0)
-                    printf("Login successful!\n");
-                else
-                    printf("Wrong password.\n");
-                break;
-            }
-        }
-        fclose(f);
-        if (!found) printf("User not found.\n");
+    // Print results
+    printf("\n-- Shared Keys --\n");
+    printf("Alice's shared key:  %lld\n", Sa);
+    printf("Bob's shared key:    %lld\n", Sb);
+    printf("Mallory↔Alice key:   %lld\n", Sm_a);
+    printf("Mallory↔Bob key:     %lld\n", Sm_b);
 
-    } else {
-        printf("Invalid choice.\n");
-    }
+    // Optional: print the random keys for verification
+    printf("\n-- Private Keys --\n");
+    printf("Alice's private key: %lld\n", a);
+    printf("Bob's private key:   %lld\n", b);
+    printf("Mallory's keys:      m1=%lld, m2=%lld\n", m1, m2);
 
     return 0;
 }
