@@ -1,25 +1,24 @@
 #include <stdio.h>
 
 int main() {
-    char userInput[200];
-    char s1[200], s2[200];
-    int i, j = 0, k = 0;
+    char text[200];
+    char even[200], odd[200];
+    int i, e = 0, o = 0;
 
-    printf("Enter the sentence: ");
-    gets(userInput);  // Note: Use `fgets` instead of `gets` for safety
+    printf("Enter a sentence: ");
+    gets(text); 
 
-    for (i = 0; userInput[i] != '\0'; i++) {
-        if (i % 2 != 0) {
-            s2[k++] = userInput[i];
-        } else {
-            s1[j++] = userInput[i];
-        }
+    for (i = 0; text[i] != '\0'; i++) {
+        if (i % 2 == 0)
+            even[e++] = text[i];
+        else
+            odd[o++] = text[i];
     }
 
-    s1[j] = '\0';
-    s2[k] = '\0';
+    even[e] = '\0';
+    odd[o] = '\0';
 
-    printf("Encrypted text: %s%s\n", s1, s2);
+    printf("Encrypted text: %s%s\n", even, odd);
 
     return 0;
 }
