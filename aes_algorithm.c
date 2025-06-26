@@ -3,33 +3,22 @@
 #include <openssl/aes.h>
 
 int main() {
-    AES_KEY encKey, decKey;
-    unsigned char key[16] = "1234567890abcdef";  // 16-byte key
-
-    char input[17];  // Max 16 chars + null
-    printf("Enter text (max 16 chars): ");
-    gets(input); 
-
-    // Prepare 16-byte plaintext buffer (pad with zeros)
-    unsigned char plain[16] = {0};
-    strncpy((char *)plain, input, 16);
-
-    unsigned char cipher[16], decrypted[16];
-
-    AES_set_encrypt_key(key, 128, &encKey);
-    AES_set_decrypt_key(key, 128, &decKey);
-
-    AES_encrypt(plain, cipher, &encKey);
-
-    printf("Encrypted (hex): ");
-    for (int i = 0; i < 16; i++) {
-        printf("%02X ", cipher[i]);
-    }
-    printf("\n");
-
-    AES_decrypt(cipher, decrypted, &decKey);
-
-    printf("Decrypted text: %s\n", decrypted);
-
+    AES_KEY ekey, dkey;
+    unsigned char k[16] = "1234567890abcdef";
+    char input[17], plain[16] = {0}, cipher[16], dec[16];
+    
+    printf("Text: "); fgets(input, 17, stdin);
+    strncpy(plain, input, 16);
+    
+    AES_set_encrypt_key(k, 128, &ekey);
+    AES_set_decrypt_key(k, 128, &dkey);
+    
+    AES_encrypt(plain, cipher, &ekey);
+    printf("Encrypted: ");
+    for(int i = 0; i < 16; i++) printf("%02X", cipher[i]);
+    
+    AES_decrypt(cipher, dec, &dkey);
+    printf("\nDecrypted: %s\n", dec);
+    
     return 0;
 }
