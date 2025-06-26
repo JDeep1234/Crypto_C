@@ -23,7 +23,7 @@ int main() {
     int key;
 
     printf("Enter message: ");
-    gets(text);  // ⚠️ Unsafe, used here as requested
+    gets(text);  
 
     printf("Enter shift key: ");
     scanf("%d", &key);
