@@ -5,7 +5,6 @@ void encryptText(char *text, int key) {
     for (int i = 0; text[i] != '\0'; i++) {
         char ch = text[i];
 
-        // Only shift letters
         if (isalpha(ch)) {
             char base = isupper(ch) ? 'A' : 'a';
             ch = (ch - base + key) % 26 + base;
@@ -16,7 +15,7 @@ void encryptText(char *text, int key) {
 }
 
 void decryptText(char *text, int key) {
-    encryptText(text, 26 - (key % 26));  // Reverse shift using same function
+    encryptText(text, 26 - (key % 26));  // Reverse shift
 }
 
 int main() {
@@ -24,16 +23,16 @@ int main() {
     int key;
 
     printf("Enter message: ");
-    fgets(text, sizeof(text), stdin);
+    gets(text);  // ⚠️ Unsafe, used here as requested
 
     printf("Enter shift key: ");
     scanf("%d", &key);
 
     encryptText(text, key);
-    printf("Encrypted: %s", text);
+    printf("Encrypted: %s\n", text);
 
     decryptText(text, key);
-    printf("Decrypted: %s", text);
+    printf("Decrypted: %s\n", text);
 
     return 0;
 }
