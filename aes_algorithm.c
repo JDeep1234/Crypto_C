@@ -3,41 +3,33 @@
 #include <openssl/aes.h>
 
 int main() {
-    AES_KEY encryptKey, decryptKey;
-    unsigned char key[16] = "1234567890abcdef"; // 16-byte AES key
+    AES_KEY encKey, decKey;
+    unsigned char key[16] = "1234567890abcdef";  // 16-byte key
 
-    char input[128];
+    char input[17];  // Max 16 chars + null
     printf("Enter text (max 16 chars): ");
-    fgets(input, sizeof(input), stdin);
-    input[strcspn(input, "\n")] = '\0'; // Remove newline
+    gets(input); 
 
-    // Ensure plaintext is 16 bytes by padding with spaces
-    unsigned char plaintext[16] = {0};
-    strncpy((char *)plaintext, input, 16);
+    // Prepare 16-byte plaintext buffer (pad with zeros)
+    unsigned char plain[16] = {0};
+    strncpy((char *)plain, input, 16);
 
-    unsigned char encrypted[16], decrypted[16];
+    unsigned char cipher[16], decrypted[16];
 
-    // Set encryption and decryption keys
-    AES_set_encrypt_key(key, 128, &encryptKey);
-    AES_set_decrypt_key(key, 128, &decryptKey);
+    AES_set_encrypt_key(key, 128, &encKey);
+    AES_set_decrypt_key(key, 128, &decKey);
 
-    // Encrypt
-    AES_encrypt(plaintext, encrypted, &encryptKey);
+    AES_encrypt(plain, cipher, &encKey);
 
-    printf("Encrypted text (hex): ");
+    printf("Encrypted (hex): ");
     for (int i = 0; i < 16; i++) {
-        printf("%02X ", encrypted[i]);
+        printf("%02X ", cipher[i]);
     }
     printf("\n");
 
-    // Decrypt
-    AES_decrypt(encrypted, decrypted, &decryptKey);
+    AES_decrypt(cipher, decrypted, &decKey);
 
-    printf("Decrypted text: ");
-    for (int i = 0; i < 16; i++) {
-        printf("%c", decrypted[i]);
-    }
-    printf("\n");
+    printf("Decrypted text: %s\n", decrypted);
 
     return 0;
 }
