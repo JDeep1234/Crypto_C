@@ -19,17 +19,19 @@ long long modPow(long long base, long long exp, long long mod) {
     return res;
 }
 
-// Modular inverse using Extended Euclidean Algorithm
 int modInverse(int e, int phi) {
-    int t = 0, newt = 1, r = phi, newr = e;
-    while (newr != 0) {
-        int q = r / newr;
-        int tmp = newt;
-        newt = t - q * newt;
-        t = tmp;
-        tmp = newr;
-        newr = r - q * newr;
-        r = tmp;
+    int t = 0, inv = 1;
+    int r = phi, curr = e;
+    while (curr != 0) {
+        int q = r / curr;
+
+        int temp = inv;
+        inv = t - q * inv;
+        t = temp;
+
+        temp = curr;
+        curr = r - q * curr;
+        r = temp;
     }
     return t < 0 ? t + phi : t;
 }
